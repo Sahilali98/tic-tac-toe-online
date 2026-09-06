@@ -18,7 +18,7 @@ export default function Home() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001';
+    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
     const newSocket = io(serverUrl);
     setSocket(newSocket);
 
