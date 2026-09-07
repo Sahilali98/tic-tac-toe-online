@@ -12,16 +12,18 @@ app.use(morgan('dev'));
 
 const server = http.createServer(app);
 
+const allowedOrigins = process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',') : ['http://localhost:3000'];
+
 const io = new Server(server, {
   cors: {
-    origin: ['https://tic-tac-toe-online-sandy.vercel.app'],
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
   },
 });
 
 handleSocketConnection(io);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
