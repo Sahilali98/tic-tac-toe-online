@@ -19,7 +19,9 @@ export default function Home() {
 
   useEffect(() => {
     const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
-    const newSocket = io(serverUrl);
+    const newSocket = io(serverUrl, {
+      transports: ['websocket'],
+    });
     setSocket(newSocket);
 
     // Auto-rejoin if we were already in a room
@@ -128,23 +130,23 @@ export default function Home() {
         {/* Left Column: Game Board */}
         <div className="lg:col-span-8 flex flex-col">
           {room && symbol && (
-            <GameBoard 
-              room={room} 
-              symbol={symbol} 
-              handleMove={handleMove} 
-              handleRestart={handleRestart} 
+            <GameBoard
+              room={room}
+              symbol={symbol}
+              handleMove={handleMove}
+              handleRestart={handleRestart}
               handleLeave={handleLeave}
             />
           )}
         </div>
-        
+
         {/* Right Column: Chat Box */}
         <div className="lg:col-span-4 flex">
           {symbol && (
-            <ChatBox 
-              messages={messages} 
-              sendMessage={handleSendMessage} 
-              mySymbol={symbol} 
+            <ChatBox
+              messages={messages}
+              sendMessage={handleSendMessage}
+              mySymbol={symbol}
             />
           )}
         </div>

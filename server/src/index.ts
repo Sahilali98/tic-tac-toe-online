@@ -7,18 +7,29 @@ import morgan from 'morgan';
 import { handleSocketConnection } from './sockets/gameHandler';
 
 const app = express();
-app.use(cors());
+const allowedOrigins = process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',') : ['http://localhost:3000'];
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 app.use(morgan('dev'));
 
 const server = http.createServer(app);
 
-const allowedOrigins = process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',') : ['http://localhost:3000'];
+
 
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
     methods: ['GET', 'POST'],
+    credentials: true,
   },
+});
+
+app.get('/', (_, res) => {
+  res.send('Server running');
 });
 
 handleSocketConnection(io);
